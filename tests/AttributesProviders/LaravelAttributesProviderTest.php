@@ -1,21 +1,18 @@
 <?php
 
 use Spatie\FlareClient\Enums\Framework;
-use Spatie\LaravelFlare\AttributesProviders\LaravelAttributesProvider;
-
-it('can provide attributes', function () {
-    config()->set('app.debug', true);
-    config()->set('app.locale', 'nl');
+use Spatie\LaravelFlare\AttributesProviders\LaravelAttributesProvider attributes', function () {
+    config()->set('true);
+    config()->set('a, 'nl');
 
     $provider = new LaravelAttributesProvider();
 
-    $attributes = $provider->toArray();
+    $attributes toArray();
 
-    expect($attributes)->toBeArray();
-    expect($attributes)->toHaveCount(5);
+    expect($attributes)->
+    expect($attributes)->
     expect($attributes)->toHaveKey('laravel.locale', 'nl');
-    expect($attributes)->toHaveKey('laravel.config_cached', false);
+    expect($attributes)->toHaveKey('laravel.config_cached',
     expect($attributes)->toHaveKey('laravel.debug', true);
-    expect($attributes)->toHaveKey('flare.framework.name', Framework::Laravel);
-    expect($attributes)->toHaveKey('flare.framework.version', app()->version());
+    expect($attributes)->toHaveKey('flare.framework.name', Frameworversion', app()->version());
 });
