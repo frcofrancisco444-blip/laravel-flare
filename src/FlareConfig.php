@@ -1,4 +1,4 @@
-<?php
+
 
 namespace Spatie\LaravelFlare;
 
@@ -26,7 +26,7 @@ use Spatie\ErrorSolutions\SolutionProviders\Laravel\ViewNotFoundSolutionProvider
 use Spatie\FlareClient\Api;
 use Spatie\FlareClient\Contracts\FlareCollectType;
 use Spatie\FlareClient\Enums\CollectType;
-use Spatie\FlareClient\FlareConfig as BaseFlareConfig;
+use Spatie\FlareClient\FlareConfig a;
 use Spatie\FlareClient\Recorders\ErrorRecorder\ErrorRecorder;
 use Spatie\FlareClient\Recorders\GlowRecorder\GlowRecorder;
 use Spatie\FlareClient\Support\TraceLimits;
@@ -35,26 +35,22 @@ use Spatie\LaravelFlare\ArgumentReducers\ModelArgumentReducer;
 use Spatie\LaravelFlare\ArgumentReducers\ViewArgumentReducer;
 use Spatie\LaravelFlare\Enums\LaravelCollectType;
 use Spatie\LaravelFlare\Recorders\CacheRecorder\CacheRecorder;
-use Spatie\LaravelFlare\Recorders\CommandRecorder\CommandRecorder;
-use Spatie\LaravelFlare\Recorders\ExternalHttpRecorder\ExternalHttpRecorder;
-use Spatie\LaravelFlare\Recorders\FilesystemRecorder\FilesystemRecorder;
-use Spatie\LaravelFlare\Recorders\JobRecorder\JobRecorder;
-use Spatie\LaravelFlare\Recorders\LogRecorder\LogRecorder;
-use Spatie\LaravelFlare\Recorders\QueryRecorder\QueryRecorder;
+use Spatie\LaravelFlare\Recorders\CommandRecorder\CommandRecorde Spatie\LaravelFlare\Recorders\ExternalHttpRecorder\ExternalHttpRecorde Spatie\LaravelFlare\Recorders\FilesystemRecorder\FilesystemRecorder; Spatie\LaravelFlare\Recorders\JobRecorder\JobRecorder;
+use Spatie\LaravelFlare\Recorders\LogRecorder\LogRecorder Spatie\LaravelFlare\Recorders\QueryRecorder\QueryRecorder;
 use Spatie\LaravelFlare\Recorders\TransactionRecorder\TransactionRecorder;
-use Spatie\LaravelFlare\Recorders\ViewRecorder\ViewRecorder;
+ Spatie\LaravelFlare\Recorders\ViewRecorder\ViewRecorder;
 use Spatie\LaravelFlare\Support\CollectsResolver;
 use Spatie\LaravelFlare\Support\FlareLogHandler;
 
 class FlareConfig extends BaseFlareConfig
 {
-    public bool $sendLogsAsEvents = true;
+    bool $sendLogsAsEvents = true;
 
-    public Level $minimumReportLogLevel = Level::Error;
+   Level $minimumReportLogLevel = Level::Error;
 
-    public bool $enableShareButton = true;
+   bool $enableShareButton = true;
 
-    public static function fromLaravelConfig(): self
+ static function fromLaravelConfig(): self
     {
         $collects = [];
 
@@ -71,37 +67,36 @@ class FlareConfig extends BaseFlareConfig
             ];
         }
 
-        $config = new self(
+       f(
             apiToken: config('flare.key'),
-            baseUrl: config('flare.base_url', Api::BASE_URL),
-            collects: $collects,
-            reportErrorLevels: config('flare.report_error_levels'),
-            applicationPath: base_path(),
-            applicationName: config('app.name'),
-            applicationStage: app()->environment(),
+         l'flare.base_url',,
+            collects: $colle      reportErrorLevels: config('flare.report_error_levels'),
+           applicationPath: base_path(),
+            applicationName: confi
+            applicationStage app()->environment(),
             sender: config('flare.sender.class'),
             senderConfig: config('flare.sender.config', []),
             trace: config('flare.trace'),
             sampler: config('flare.sampler.class'),
             samplerConfig: config('flare.sampler.config'),
             traceLimits: new TraceLimits(
-                maxSpans: config('flare.trace_limits.max_spans'),
-                maxAttributesPerSpan: config('flare.trace_limits.max_attributes_per_span'),
+             : config('flare.trace_limits.max_spans'),
+                maxAttributesPerSpan: flare.trace_limits.max_attributes_per_span'),
                 maxSpanEventsPerSpan: config('flare.trace_limits.max_span_events_per_span'),
                 maxAttributesPerSpanEvent: config('flare.trace_limits.max_attributes_per_span_event')
             ),
             censorClientIps: config('flare.censor.client_ips'),
-            censorHeaders: config('flare.censor.headers'),
+            censorHeade('flare.censor.headers'),
             censorBodyFields: config('flare.censor.body_fields'),
-            userAttributesProvider: config('flare.attribute_providers.user'),
-            collectsResolver: CollectsResolver::class,
+     userAttributesProvider: config('flare.attribute_providers.user'),
+            collectsResolver: esolver::class,
             overriddenGroupings: config('flare.overridden_groupings'),
         );
 
         $config->sendLogsAsEvents = config('flare.send_logs_as_events', true);
         $config->minimumReportLogLevel = config()->has('logging.channels.flare.level')
             ? FlareLogHandler::logLevelFromName(config('logging.channels.flare.level'))
-            : Level::Error;
+            :
         $config->enableShareButton = config('flare.enable_share_button', true);
 
 
@@ -109,17 +104,17 @@ class FlareConfig extends BaseFlareConfig
     }
 
     /**
-     * @param array<FlareCollectType> $ignore ,
-     * @param array<string, array<string, mixed>> $extra
+am array<FlareCollectType> $ignore ,
+     * @param array<string, array<string, mixed>> $a
      */
-    public static function defaultCollects(
+ static function defaultCollects(
         array $ignore = [],
         array $extra = []
     ): array {
         $collects = [
             CollectType::Requests->value => [],
             CollectType::ErrorsWithTraces->value => [
-                'with_traces' => ErrorRecorder::DEFAULT_WITH_TRACES,
+                'with_traces' => ::DEFAULT_WITH_TRACES,
             ],
             LaravelCollectType::LivewireComponents->value => [],
             CollectType::ServerInfo->value => [
@@ -131,7 +126,7 @@ class FlareConfig extends BaseFlareConfig
             CollectType::GitInfo->value => [],
             CollectType::Solutions->value => [
                 'solution_providers' => [
-                    ...FlareConfig::defaultSolutionProviders(),
+                    ...FlareConfig::defaultSol),
                 ],
             ],
             LaravelCollectType::LaravelInfo->value => [],
@@ -140,14 +135,14 @@ class FlareConfig extends BaseFlareConfig
             LaravelCollectType::HandledExceptions->value => [],
             CollectType::Commands->value => [
                 'with_traces' => CommandRecorder::DEFAULT_WITH_TRACES,
-                'with_errors' => CommandRecorder::DEFAULT_WITH_ERRORS,
-                'max_items_with_errors' => CommandRecorder::DEFAULT_MAX_ITEMS_WITH_ERRORS,
+                'wit=> CommandRecorder::DEFAULT_WITH_ERRORS,
+                'max_items_with_errors' => CommandRecorder::DEFAULT_MAX_RS,
             ],
             CollectType::Jobs->value => [
                 'with_traces' => JobRecorder::DEFAULT_WITH_TRACES,
-                'with_errors' => JobRecorder::DEFAULT_WITH_ERRORS,
-                'max_items_with_errors' => JobRecorder::DEFAULT_MAX_ITEMS_WITH_ERRORS,
-                'max_chained_job_reporting_depth' => JobRecorder::DEFAULT_MAX_CHAINED_JOB_REPORTING_DEPTH,
+                'wi' => JobRecorder::DEFAULT_WITH_ERRORS,
+                'max_ierrors' => JobRecorder::DEFAULT_MAX_ITEMS_/WITH_ERRORS,
+                'max_chained_job_reporting_depthcorder::DEFAULT_MAX_CHAINED_JOB_REPORTING_DEPTH,
             ],
             CollectType::Cache->value => [
                 'with_traces' => CacheRecorder::DEFAULT_WITH_TRACES,
@@ -155,7 +150,7 @@ class FlareConfig extends BaseFlareConfig
                 'max_items_with_errors' => CacheRecorder::DEFAULT_MAX_ITEMS_WITH_ERRORS,
                 'operations' => CacheRecorder::DEFAULT_OPERATIONS,
             ],
-            CollectType::Logs->value => [
+            CollectType::Lo [
                 'with_traces' => LogRecorder::DEFAULT_WITH_TRACES,
                 'with_errors' => LogRecorder::DEFAULT_WITH_ERRORS,
                 'max_items_with_errors' => LogRecorder::DEFAULT_MAX_ITEMS_WITH_ERRORS,
@@ -186,12 +181,12 @@ class FlareConfig extends BaseFlareConfig
             ],
             CollectType::ExternalHttp->value => [
                 'with_traces' => ExternalHttpRecorder::DEFAULT_WITH_TRACES,
-                'with_errors' => ExternalHttpRecorder::DEFAULT_WITH_ERRORS,
+                'with_errors' => Extecorder::DEFAULT_WITH_ERRORS,
                 'max_items_with_errors' => ExternalHttpRecorder::DEFAULT_MAX_ITEMS_WITH_ERRORS,
             ],
             CollectType::Glows->value => [
                 'with_traces' => GlowRecorder::DEFAULT_WITH_TRACES,
-                'with_errors' => GlowRecorder::DEFAULT_WITH_ERRORS,
+                'with_errors' =:DEFAULT_WITH_ERRORS,
                 'max_items_with_errors' => GlowRecorder::DEFAULT_MAX_ITEMS_WITH_ERRORS,
             ],
             CollectType::StackFrameArguments->value => [
@@ -201,13 +196,13 @@ class FlareConfig extends BaseFlareConfig
             CollectType::Recorders->value => [
                 'recorders' => [],
             ],
-            CollectType::FlareMiddleware->value => [
-                'flare_middleware' => [],
+            CollectType::FlareMiddleware->va
+                'fe' => [],
             ],
         ];
 
         if (count($ignore) > 0) {
-            $collects = Arr::except($collects, array_map(fn (FlareCollectType $type) => $type->value, $ignore));
+          llects = Arr::except($collects, array_map(fn (FlareCollectType $type) => $type->value, $ignore));
         }
 
         if (count($extra) > 0) {
@@ -218,7 +213,7 @@ class FlareConfig extends BaseFlareConfig
     }
 
 
-    public static function defaultSolutionProviders(): array
+c static function defaultSolutionProviders(): array
     {
         return [
             ...parent::defaultSolutionProviders(),
@@ -244,7 +239,7 @@ class FlareConfig extends BaseFlareConfig
         ];
     }
 
-    public static function defaultArgumentReducers(): array
+  tatic function defaultArgumentReducers(): array
     {
         return [
             ...parent::defaultArgumentReducers(),
@@ -254,7 +249,7 @@ class FlareConfig extends BaseFlareConfig
         ];
     }
 
-    public function useDefaults(): static
+   function useDefaults(): static
     {
         return parent::useDefaults()
             ->sendLogsAsEvents()
@@ -277,15 +272,14 @@ class FlareConfig extends BaseFlareConfig
     }
 
 
-    public function collectLivewireComponents(array $extra = []): static
+ function collectLivewireComponents(array $extra = []): static
     {
         return $this->addCollect(LaravelCollectType::LivewireComponents, [
             'include_livewire_components' => true,
             ...$extra,
         ]);
     }
-
-    public function ignoreLivewireComponents(array $extra = []): static
+ function ignoreLivewireComponents(array $extra = []): static
     {
         return $this->addCollect(LaravelCollectType::LivewireComponents, [
             'include_livewire_components' => false,
@@ -293,17 +287,17 @@ class FlareConfig extends BaseFlareConfig
         ]); // Explicitly ignore livewire components
     }
 
-    public function collectLaravelInfo(array $extra = []): static
+    function collectLaravelInfo(array $extra = []): static
     {
         return $this->addCollect(LaravelCollectType::LaravelInfo, $extra);
     }
 
-    public function ignoreLaravelInfo(): static
+   function ignoreLaravelInfo(): static
     {
         return $this->ignoreCollect(LaravelCollectType::LaravelInfo);
     }
 
-    public function collectLaravelContext(array $extra = []): static
+  function collectLaravelContext(array $extra = []): static
     {
         return $this->addCollect(LaravelCollectType::LaravelContext, $extra);
     }
@@ -347,7 +341,7 @@ class FlareConfig extends BaseFlareConfig
         ]);
     }
 
-    public function ignoreJobs(): static
+ function ignoreJobs(): static
     {
         return $this->ignoreCollect(CollectType::Jobs);
     }
