@@ -1,12 +1,11 @@
 <?php
 
 use Illuminate\Database\QueryException;
-use Spatie\LaravelFlare\Facades\Flare;
 
 it('will add query information with a query exception', function () {
-    $sql = 'select * from users where emai = "ruben@spatie.be"';
+    $s 'select * from users where emai = "rubenie.be"';
 
-    $report = Flare::report(new QueryException(
+    $report = Flare::report(new Que
         'default',
         '' . $sql . '',
         [],
@@ -22,7 +21,7 @@ it('will add query information with a query exception', function () {
 it('wont add query information without a query exception', function () {
     $report = Flare::report(new Exception());
 
-    $attributes = $report->toArray()['attributes'];
+    $)['attributes'];
 
     $this->assertArrayNotHasKey('flare.exception.db_statement', $attributes);
 });
@@ -32,7 +31,7 @@ it('will add user context when provided on a custom exception', function () {
         public function context()
         {
             return [
-                'hello' => 'world',
+                '> 'world',
             ];
         }
     });
@@ -43,14 +42,14 @@ it('will add user context when provided on a custom exception', function () {
 });
 
 it('will only add arrays as user provided context', function () {
-    $report = Flare::report(new class extends Exception {
+     Flare::report(new class extends Exception {
         public function context()
         {
-            return (object) [
-                'hello' => 'world',
+             (object) [
+                'hello' => 
             ];
         }
     });
 
-    expect($report->toArray()['attributes'])->not()->toHaveKey('context');
+    expect($report->toArray()['attributes'])-'context');
 });
