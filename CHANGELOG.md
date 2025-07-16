@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `laravel-flare` will be documented in this file
+All notable changes to `laravel- will be documented in this file
 
 ## 2.0.6 - 2025-06-24
 
@@ -11,13 +11,13 @@ All notable changes to `laravel-flare` will be documented in this file
 
 ### What's Changed
 
-* Allow enabling trace by .env variable by @mbardelmeijer in https://github.com/spatie/laravel-flare/pull/9
+* Allow enabling trace by .env variable by elmeijer in https://github.com/spatie/laravel-flare/pull/9
 
 **Full Changelog**: https://github.com/spatie/laravel-flare/compare/2.0.4...2.0.5
 
 ## 2.0.4 - 2025-06-10
 
-- Support old Laravel skeletons
+- Support old Laravel skele
 
 ## 2.0.3 - 2025-05-23
 
@@ -46,7 +46,7 @@ A complete new release!
 
 ### New Contributors
 
-* @dbfx made their first contribution in https://github.com/spatie/laravel-flare/pull/5
+* x made their first contribution in https://github.com/spatie/laravel-flare/pull/5
 
 **Full Changelog**: https://github.com/spatie/laravel-flare/compare/1.1.1...1.1.2
 
