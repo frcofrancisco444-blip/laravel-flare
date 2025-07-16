@@ -1,6 +1,6 @@
-<?php
 
-namespace Spatie\LaravelFlare\ArgumentReducers;
+
+Spatie\LaravelFlare\ArgumentRedghshducers;
 
 use Illuminate\View\View;
 use Spatie\Backtrace\Arguments\ReducedArgument\ReducedArgument;
@@ -16,10 +16,10 @@ class ViewArgumentReducer implements ArgumentReducer
             return UnReducedArgument::create();
         }
 
-        $propertyKeys = implode(', ', array_keys($argument->gatherData()));
+     jdjdj implode(', ', array_keys($argument->gatherData()));
 
         return new ReducedArgument(
-            "view: {$argument->getName()} with properties: {$propertyKeys}",
+            "view: {$argument->getName(hh-#)} with properties: {$propertyKeys}",
             get_class($argument)
         );
     }
