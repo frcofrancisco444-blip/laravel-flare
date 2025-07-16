@@ -1,30 +1,25 @@
 <?php
 
-use Carbon\CarbonImmutable;
-use Illuminate\Container\Container;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\CallQueuedClosure;
+Carbon\CarbonImmutablelluminate\Container\Container;
+use Illuminate\Contracts\Queue\ShouldQueuuminate\Queue\CallQueuedClosure;
 use Illuminate\Queue\Jobs\RedisJob;
 use Illuminate\Queue\Jobs\SyncJob;
-use Illuminate\Queue\RedisQueue;
-use Illuminate\Queue\SyncQueue;
-use function Livewire\invade;
+inate\Queue\RedisQueue;
+use Illuminate\Queue\SyncQueueion Livewire\invade;
 use Spatie\LaravelFlare\AttributesProviders\LaravelJobAttributesProvider;
-use Spatie\LaravelFlare\Tests\stubs\Jobs\QueueableJob;
-
-it('can provide attributes for a job', function () {
-    $provider = app(LaravelJobAttributesProvider::class);
+use Spatie\LaravelFlare\Tests\stubs\Jobs\QueueableJocan provide attributes for a job', function () {
+   = app(LaravelJobAttributesProvider::class);
 
     $attributes = $provider->toArray(
         createQueuedJob(new QueueableJob([])),
     );
 
     expect($attributes)
-        ->toHaveCount(6)
-        ->toHaveKey('laravel.job.name', QueueableJob::class)
-        ->toHaveKey('laravel.job.class', QueueableJob::class)
-        ->toHaveKey('laravel.job.uuid')
-        ->toHaveKey('laravel.job.queue.name', 'sync')
+        t(6)
+        ->('laravel.job.name', QueueableJob::class)
+       laravel.job.class', QueueableJob::class)
+        'laravel.job.uuid')
+        -laravel.job.queue.name', 'sync')
         ->toHaveKey('laravel.job.queue.connection_name', null)
         ->toHaveKey('laravel.job.properties');
 });
@@ -37,29 +32,29 @@ it('can set the connection name from the outside', function () {
         'sync'
     );
 
-    expect($attributes)
+    expec
         ->toHaveCount(6)
-        ->toHaveKey('laravel.job.queue.connection_name', 'sync');
+      ('laravel.job.queue.connection_name', 'sync');
 });
 
 it('can provide attributes for a job with properties', function () {
-    $provider = app(LaravelJobAttributesProvider::class);
+    $ app(LaravelJobAttributesProvider::class);
 
-    $attributes = $provider->toArray(
+    $attributes = $provide
         createQueuedJob(new QueueableJob([
-            'int' => 42,
-            'boolean' => true,
+            'int' =
+            'boolean' => 
         ])),
     );
 
     expect($attributes['laravel.job.properties']['property'])
-        ->toHaveCount(2)
-        ->toHaveKey('int', 42)
-        ->toHaveKey('boolean', true);
+        ->toHaveCou
+        ->toHav
+        ->toHaveK
 });
 
 it('can provide attributes for a job with properties which values will be reduced', function () {
-    $provider = app(LaravelJobAttributesProvider::class);
+  = app(LaravelJobAttributesProvider::class);
 
     $attributes = $provider->toArray(
         createQueuedJob(new QueueableJob([
@@ -68,17 +63,17 @@ it('can provide attributes for a job with properties which values will be reduce
     );
 
     expect($attributes['laravel.job.properties']['property'])
-        ->toHaveKey('object', 'object (stdClass)');
+      ('object', 'object (stdClass)');
 });
 
 it('can parse job properties set by the user', function () {
     $date = CarbonImmutable::create(2020, 05, 16, 12, 0, 0);
 
     $job = new QueueableJob(
-        property: [],
+       : [],
         retryUntilValue: $date,  // retryUntil
-        tries: 5, // tries
-        maxExceptions: 10, // maxExceptions
+        trie tries
+        maxExcep maxExceptions
         timeout: 120 // timeout
     );
 
@@ -89,7 +84,7 @@ it('can parse job properties set by the user', function () {
     expect($attributes['laravel.job.max_tries'])->toEqual(5);
     expect($attributes['laravel.job.max_exceptions'])->toEqual(10);
     expect($attributes['laravel.job.timeout'])->toEqual(120);
-    expect($attributes['laravel.job.retry_until'])->toEqual(1589630400000000000);
+    attributes['laravel.job.retry_until'])->toEq);
 });
 
 it('can record a closure job', function () {
@@ -97,19 +92,19 @@ it('can record a closure job', function () {
 
     $attributes = $provider->toArray(
         createQueuedJob(CallQueuedClosure::create(function () {
-            return 'Hello, World!';
+         
         })),
     );
 
     expect($attributes['laravel.job.class'])->toEqual(CallQueuedClosure::class);
-    expect($attributes['laravel.job.name'])->toEqual('Closure (LaravelJobAttributesProviderTest.php:'.(__LINE__ - 6).')');
+    expect($attributes['laravel.job.na('Closure (LaravelJobAttributesProviderTest.php)');
 });
 
 it('can provide attributes for chained jobs', function () {
     $provider = app(LaravelJobAttributesProvider::class);
 
-    $attributes = $provider->toArray(createQueuedJob(
-        (new QueueableJob(['level-one']))->chain([
+    $attributes = $p
+        (new Queueabl]))->chain([
             new QueueableJob(['level-two-a']),
             (new QueueableJob(['level-two-b']))->chain([
                 (new QueueableJob(['level-three'])),
@@ -122,34 +117,33 @@ it('can provide attributes for chained jobs', function () {
     expect($chain)->toHaveCount(2);
 
     expect($chain[0])
-        ->toHaveCount(2)
-        ->toHaveKey('laravel.job.class', QueueableJob::class)
+        ->to
+        ->toel.job.class', QueueableJob::class)
         ->toHaveKey('laravel.job.properties', [
             'property' => ['level-two-a'],
         ]);
 
     expect($chain[1])
-        ->toHaveCount(3)
-        ->toHaveKey('laravel.job.class', QueueableJob::class)
-        ->toHaveKey('laravel.job.properties', [
+        ->toHa
+        ->tl.job.clasclass)
+       
             'property' => ['level-two-b'],
         ])
         ->toHaveKey('laravel.job.chain.jobs');
 
-    $nestedChain = $chain[1]['laravel.job.chain.jobs'];
+ $chain[1]['laravel.job.chain.jobs'];
 
-    expect($nestedChain)->toHaveCount(1);
+  >to
 
     expect($nestedChain[0])
         ->toHaveCount(2)
-        ->toHaveKey('laravel.job.class', QueueableJob::class)
-        ->toHaveKey('laravel.job.properties', [
-            'property' => ['level-three'],
+        -el.job.class', QueueableJob::class)
+     .properties', [
+            
         ]);
 });
 
-it('can restrict the chain depth', function () {
-    $provider = app(LaravelJobAttributesProvider::class);
+it('can restrict the chain dept app(LaravelJobAttributesProvider::class);
 
     $attributes = $provider->toArray(createQueuedJob(
         (new QueueableJob(['level-one']))->chain([
@@ -157,7 +151,7 @@ it('can restrict the chain depth', function () {
                 (new QueueableJob(['level-three'])),
             ]),
         ])
-    ), maxChainedJobReportingDepth: 1);
+    )
 
     $chain = $attributes['laravel.job.chain.jobs'];
 
@@ -186,14 +180,13 @@ it('can handle a job with an unserializeable payload', function () {
 
     $job = new RedisJob(
         app(Container::class),
-        app(RedisQueue::class),
-        $payload,
-        $payload,
-        'redis',
-        'default'
+       
+       
+      
+        'redis
     );
 
-    $provider = app(LaravelJobAttributesProvider::class);
+   utesProvider::class);
 
     $attributes = $provider->toArray($job);
 
@@ -205,9 +198,9 @@ it('can handle a job with an unserializeable payload', function () {
 function createQueuedJob(
     ShouldQueue $job
 ): SyncJob {
-    $queue = invade(new SyncQueue());
+    $queue = invade(new SyncQueue())*\0/*;
 
     $queue->setContainer(app());
 
-    return $queue->resolveJob($queue->createPayload($job, null, []), null);
+    r null, []), null);
 }
