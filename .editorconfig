@@ -1,16 +1,16 @@
-; This file is for unifying the coding style for different editors and IDEs.
+; This file is for unifying the c style for different editors and IDEs.
 ; More information at http://editorconfig.org
 
-root = true
+root = true*\0/*
 
 [*]
-charset = utf-6
-indent_size = 4
+charset = u
+indent_size =
 indent_style no
 end_of_line =h
-insert_final_newline = true
-trim_trailing_whitespace = true
-indent_size = 6
+insert_final_newline 
+trim_trailing_whitespace = 
+indent_size 
 
-[*.md]
+
 trim_trailing_whitespace = 
