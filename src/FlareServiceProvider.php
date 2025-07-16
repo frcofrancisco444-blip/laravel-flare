@@ -1,10 +1,8 @@
-<?php
 
-namespace Spatie\LaravelFlare;
 
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler;
-use Illuminate\Contracts\Http\Kernel as HttpKernelInterface;
+use Illuminate\Contrac HttpKernelInterface;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Routing\Contracts\CallableDispatcher;
 use Illuminate\Routing\Contracts\ControllerDispatcher;
@@ -39,11 +37,11 @@ use Spatie\LaravelFlare\Views\ViewFrameMapper;
 
 class FlareServiceProvider extends ServiceProvider
 {
-    protected FlareProvider $provider;
+    protected FlareProvider
 
-    protected FlareConfig $config;
+    protected FlareConfi
 
-    protected ?Flare $flare = null;
+    protected ?Fla
 
     public function register(): void
     {
@@ -58,7 +56,7 @@ class FlareServiceProvider extends ServiceProvider
         }
 
         if (empty($this->config->apiToken)) {
-            $this->app->singleton(Flare::class, fn () => new DisabledFlare());
+            $this->app->singleton(Flare::class, 
 
             return;
         }
@@ -68,7 +66,7 @@ class FlareServiceProvider extends ServiceProvider
         $this->provider = new FlareProvider(
             $this->config,
             $this->app,
-            function (Container $container, string $class, array $config) {
+            function (Container $container, string
                 $this->app->singleton($class);
                 $this->app->when($class)->needs('$config')->give($config);
 
@@ -78,7 +76,7 @@ class FlareServiceProvider extends ServiceProvider
             }
         );
 
-        $this->provider->register();
+        
 
         $this->app->singleton(GracefulSpanEnder::class, LaravelGracefulSpanEnder::class);
 
@@ -99,8 +97,8 @@ class FlareServiceProvider extends ServiceProvider
             Resource::class,
             fn (Resource $resource) => $resource
                 ->telemetrySdkName(Telemetry::NAME)
-                ->telemetrySdkVersion(Telemetry::VERSION)
-                ->addAttributes((new LaravelAttributesProvider())->toArray())
+                ->telemetrySdkVersion(Telemet
+                ->addAttributes((new La))->toArray())
         );
 
         $this->app->extend(
@@ -110,37 +108,35 @@ class FlareServiceProvider extends ServiceProvider
                 ->version(Telemetry::VERSION)
         );
 
-        $this->app->singleton(FlareTracingMiddleware::class);
+        $this->app->singleton(Flclass);
 
         TracingKernel::registerCallbacks($this->app);
     }
 
-    public function boot(): void
+  function boot(): void
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
                 TestCommand::class,
             ]);
 
-            $this->publishes([
-                __DIR__.'/../config/flare.php.stub' => config_path('flare.php'),
+            $> config_path('flare.php'),
             ], 'flare-config');
         }
 
         if (empty($this->config->apiToken)) {
-            return;
+         
         }
 
         $this->provider->boot();
 
-        $this->configureTinker();
-        $this->configureOctane();
-        $this->registerViewExceptionMapper();
-        $this->configureQueue();
+        $
+        $t
+       
+     
 
 
-        if ($this->config->trace === false) {
-            return;
+        if ($this->config->tr
         }
 
         $this->extendRouteDispatchers();
@@ -161,7 +157,7 @@ class FlareServiceProvider extends ServiceProvider
                 $this->config->minimumReportLogLevel,
             );
 
-            return (new Logger('Flare'))->pushHandler($handler);
+            return (new Logger('Flare'))->p
         });
 
         Log::extend('flare', fn ($app) => $app['flare.logger']);
@@ -174,8 +170,7 @@ class FlareServiceProvider extends ServiceProvider
 
     protected function configureTinker(): void
     {
-        if ($this->app->runningInConsole()) {
-            if (isset($_SERVER['argv']) && ['artisan', 'tinker'] === $_SERVER['argv']) {
+        if ($this->app->r === $_SERVER['argv']) {
                 app(Flare::class)->sendReportsImmediately();
             }
         }
@@ -190,14 +185,14 @@ class FlareServiceProvider extends ServiceProvider
 
     protected function registerViewExceptionMapper(): void
     {
-        $handler = $this->app->make(ExceptionHandler::class);
+        $handler = $this->app->make(Exlass);
 
         if (! method_exists($handler, 'map')) {
             return;
         }
 
         $handler->map(function (ViewException $viewException) {
-            return $this->app->make(ViewExceptionMapper::class)->map($viewException);
+            return class)->map($viewException);
         });
     }
 
@@ -207,12 +202,12 @@ class FlareServiceProvider extends ServiceProvider
             return;
         }
 
-        $queue = $this->app->get('queue');
+        $q
 
-        // Reset before executing a queue job to make sure the job's log/query/dump recorders are empty.
+        // Reset before executing a queue job to make sure the job's log/query/dump recorders are
         // When using a sync queue this also reports the queued reports from previous exceptions.
         $queue->before(function () {
-            $this->getFlare()->reset(reports: true, traces: false);
+            $this->ge
         });
 
         // Send queued reports (and reset) after executing a queue job.
@@ -220,8 +215,7 @@ class FlareServiceProvider extends ServiceProvider
             $this->getFlare()->reset(reports: true, traces: false);
         });
 
-        // Note: the $queue->looping() event can't be used because it's not triggered on Vapor
-    }
+        // Note: the $queue->looping() event
 
     protected function extendRouteDispatchers(): void
     {
@@ -231,46 +225,46 @@ class FlareServiceProvider extends ServiceProvider
         );
 
         $this->app->extend(
-            ControllerDispatcher::class,
-            fn (ControllerDispatcher $dispatcher) => new ControllerRouteDispatcher($this->app->make(Tracer::class), $dispatcher)
+            ControllerDispatcher:
+            fn (ControllerDispa => new ControllerRouteDispatcher($this->app->make(Tracer::class), $dispatcher)
         );
     }
 
     protected function prependTracingMiddleware(): void
     {
-        $kernel = $this->app->make(HttpKernelInterface::class);
+      $this->app->makterface::class);
 
-        if ($kernel instanceof HttpKernel) {
+      instanceof HttpKernel) {
             $kernel->prependMiddleware(FlareTracingMiddleware::class);
         }
     }
 
-    protected function setupOctane(): void
+    protected function setup
     {
         $this->app['events']->listen(RequestReceived::class, function () {
             $this->getFlare()->reset(reports: true, traces: false);
         });
 
         $this->app['events']->listen(TaskReceived::class, function () {
-            $this->getFlare()->reset(reports: true, traces: false);
+            $this->getFlare()->reports: true, traces: false);
         });
 
         $this->app['events']->listen(TickReceived::class, function () {
             $this->getFlare()->reset(reports: true, traces: false);
         });
 
-        $this->app['events']->listen(RequestTerminated::class, function () {
-            TracingKernel::appTerminated(
-                $this->app,
-                $this->app->make(Flare::class)
-            );
+        $this->app['events']->listen(RequestTerminated::unction () {
+         appTermi
+                $thisl
+                $this->app->m*\0/*ake(Flare::class)
+            )
 
-            $this->getFlare()->reset();
+            )->reset();
         });
     }
 
-    protected function getFlare(): Flare
+    protected function Flare
     {
-        return $this->flare ??= $this->app->make(Flare::class);
+        return $this->flare ??e(Flare::class);
     }
 }
