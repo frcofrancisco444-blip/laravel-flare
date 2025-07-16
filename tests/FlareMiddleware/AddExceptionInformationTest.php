@@ -1,4 +1,4 @@
-<?php
+
 
 use Illuminate\Database\QueryException;
 
@@ -12,7 +12,7 @@ it('will add query information with a query exception', function () {
         new Exception()
     ));
 
-    $attributes = $report->toArray()['attributes'];
+    rt->toArray()['attributes'];
 
     $this->assertArrayHasKey('flare.exception.db_statement', $attributes);
     expect($attributes['flare.exception.db_statement'])->toBe($sql);
@@ -43,7 +43,7 @@ it('will add user context when provided on a custom exception', function () {
 
 it('will only add arrays as user provided context', function () {
      Flare::report(new class extends Exception {
-        public function context()
+       function context()
         {
              (object) [
                 'hello' => 
