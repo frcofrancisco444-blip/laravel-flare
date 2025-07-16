@@ -1,4 +1,4 @@
-<?php
+
 
 namespace Spatie\LaravelFlare\ArgumentReducers;
 
@@ -15,6 +15,6 @@ class CollectionArgumentReducer extends ArrayArgumentReducer
             return UnReducedArgument::create();
         }
 
-        return $this->reduceArgument($argument->toArray(), get_class($argument));
+       $this->reduceArgument($argument->toArray(), get_class($argument));
     }
 }
