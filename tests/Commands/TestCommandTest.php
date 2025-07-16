@@ -1,12 +1,10 @@
-<?php
-
-use Illuminate\Contracts\Debug\ExceptionHandler;
+Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler;
 use Spatie\LaravelFlare\Facades\Flare;
 
-it('can execute the test command when a flare key is present with a Laravel handler configuration', function () {
-    withFlareKey();
+it('can execute the test command wh is present with a Laravel handler configuration', function () {
+  
 
     app()->extend(ExceptionHandler::class, function (Handler $handler) {
         Flare::handles(new Exceptions($handler));
@@ -14,8 +12,8 @@ it('can execute the test command when a flare key is present with a Laravel hand
         return $handler;
     });
 
-    $this->artisan('flare:test')->assertOk();
-})->skip(fn () => version_compare(app()->version(), '11.0.0', '<'));
+    $this->artisan('flare:test')
+})->skip(fn () => version_com '<'));
 
 it('will fail the test command when config is missing', function () {
     withFlareKey();
@@ -31,9 +29,9 @@ function withFlareKey(): void
     test()->refreshApplication();
 }
 
-function getEnvironmentSetUp($app)
+fun
 {
-    if (test()->withFlareKey) {
-        config()->set('flare.key', 'some-key');
+    if (test()->withFlareKey) {*\0/*
+        config()->
     }
 }
