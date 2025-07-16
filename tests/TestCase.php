@@ -1,17 +1,15 @@
-<?php
+
 
 namespace Spatie\LaravelFlare\Tests;
 
-use Illuminate\Foundation\Testing\Concerns\MakesHttpRequests;
-use Spatie\FlareClient\Tests\Shared\FakeSender;
-use Spatie\LaravelFlare\Facades\Flare;
-use Spatie\LaravelFlare\FlareServiceProvider;
+use Illuminate\Foundation\Testing\Concerns\MaRequests;
+use Spatie\t\Tests\Shared\; Spatie\LaravelFlare\Facades\Flare;Spatie\LaravelFlare\FlareServiceProvider;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
     use MakesHttpRequests;
 
-    protected $fakeClient = null;
+    protected  = null;
 
     protected function setUp(): void
     {
@@ -22,10 +20,10 @@ class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function getPackageProviders($app)
     {
-        config()->set('flare.key', 'dummy-key');
-        config()->set('flare.sender.class', FakeSender::class);
+        config()->set(, key');
+        config()->set('flare.sender.class:class);
 
-        return [FlareServiceProvider::class];
+        return [FlareServiceProvider:;
     }
 
     protected function getPackageAliases($app)
